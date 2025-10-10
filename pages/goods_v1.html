@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Товары</title>
+  
+  <link rel="stylesheet" href="../style/theme.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <h1 class="header__title">Хэдер</h1>
+      <div class="header__actions">
+        <button class="theme-toggle" id="themeToggle">Сменить тему</button>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="../index.html">Главная</a></li>
+        <li class="nav__item"><a class="nav__link" href="news.html">Новости</a></li>
+        <li class="nav__item"><a class="nav__link" href="practices.html">Практики</a></li>
+        <li class="nav__item"><a class="nav__link nav__link--active" href="goods.html">Товары</a></li>
+        <li class="nav__item"><a class="nav__link" href="contacts.html">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <h1 class="page-title">Товары</h1>
+      <section class="goods__container">
+        <!-- Товар со скидкой -->
+        <article class="product-card product-card--sale" data-product-id="1">
+          <div class="product-card__image-wrapper">
+            <img class="product-card__image" src="../images/Kalyan.jpeg" alt="Кальян">
+            <span class="product-card__badge product-card__badge--sale">-20%</span>
+          </div>
+          <h3 class="product-card__title">Кальян</h3>
+          <p class="product-card__price">
+            <span class="product-card__price-old">3000 руб.</span>
+            <span class="product-card__price-new">2400 руб.</span>
+          </p>
+          <div class="product-card__actions">
+            <button class="btn btn--primary product-card__action" data-action="select">Выбрать</button>
+            <button class="btn btn--secondary product-card__action" data-action="cart">В корзину</button>
+          </div>
+        </article>
+
+        <!-- Обычная карточка -->
+        <article class="product-card" data-product-id="2">
+          <div class="product-card__image-wrapper">
+            <img class="product-card__image" src="../images/zhvetoshka.jpeg" alt="Цветошка">
+          </div>
+          <h3 class="product-card__title">Цветошка</h3>
+          <p class="product-card__price">Цена: <span class="product-card__price-current">800 руб.</span></p>
+          <div class="product-card__actions">
+            <button class="btn btn--primary product-card__action" data-action="select">Выбрать</button>
+            <button class="btn btn--secondary product-card__action" data-action="cart">В корзину</button>
+          </div>
+        </article>
+
+        <!-- Обычная карточка -->
+        <article class="product-card" data-product-id="3">
+          <div class="product-card__image-wrapper">
+            <img class="product-card__image" src="../images/BoxingGloves.jpeg" alt="Перчатки для бокса">
+          </div>
+          <h3 class="product-card__title">Перчатки для бокса</h3>
+          <p class="product-card__price">Цена: <span class="product-card__price-current">2000 руб.</span></p>
+          <div class="product-card__actions">
+            <button class="btn btn--primary product-card__action" data-action="select">Выбрать</button>
+            <button class="btn btn--secondary product-card__action" data-action="cart">В корзину</button>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Футер</p>
+    </footer>
+  </div>
+
+  <script>
+    // Тоггл темы
+    (function() {
+      const root = document.documentElement;
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark') root.setAttribute('data-theme', 'dark');
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          root.removeAttribute('data-theme');
+          localStorage.removeItem('theme');
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      });
+    })();
+
+    // Интерактивность карточек товара
+    (function() {
+      const cards = document.querySelectorAll('.product-card');
+
+      cards.forEach(card => {
+        const selectBtn = card.querySelector('[data-action="select"]');
+        const cartBtn = card.querySelector('[data-action="cart"]');
+
+        if (selectBtn) {
+          selectBtn.addEventListener('click', () => {
+            const selected = card.classList.toggle('product-card--selected');
+            selectBtn.setAttribute('aria-pressed', String(selected));
+            selectBtn.textContent = selected ? 'Выбрано' : 'Выбрать';
+          });
+        }
+
+        if (cartBtn) {
+          cartBtn.addEventListener('click', () => {
+            const title = card.querySelector('.product-card__title')?.textContent?.trim() || 'Товар';
+            alert(`${title} добавлен в корзину`);
+          });
+        }
+
+        // Клик по самой карточке тоже переключает выбранность
+        card.addEventListener('click', (e) => {
+          // Не переключаем, если клик по кнопкам
+          if (e.target.closest('.product-card__action')) return;
+          const selectBtn = card.querySelector('[data-action="select"]');
+          const selected = card.classList.toggle('product-card--selected');
+          if (selectBtn) {
+            selectBtn.setAttribute('aria-pressed', String(selected));
+            selectBtn.textContent = selected ? 'Выбрано' : 'Выбрать';
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

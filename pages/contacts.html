@@ -4,54 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Контакты</title>
-  <link rel="stylesheet" href="../style/styles.css">
+  
+  <link rel="stylesheet" href="../style/theme.css">
 </head>
 <body>
-  <div class="page-container">
+  <div class="page">
     <header class="header">
-      <h1>Хэдер</h1>
+      <h1 class="header__title">Хэдер</h1>
+      <div class="header__actions">
+        <button class="theme-toggle" id="themeToggle">Сменить тему</button>
+      </div>
     </header>
 
     <nav class="nav">
-      <ul class="nav-list">
-        <li class="nav-item"><a class="nav-link" href="../index.html">Главная</a></li>
-        <li class="nav-item"><a class="nav-link" href="news.html">Новости</a></li>
-        <li class="nav-item"><a class="nav-link" href="practices.html">Практики</a></li>
-        <li class="nav-item"><a class="nav-link" href="goods.html">Товары</a></li>
-        <li class="nav-item"><a class="nav-link" href="contacts.html">Контакты</a></li>
+      <ul class="nav__list">
+        <li class="nav__item"><a class="nav__link" href="../index.html">Главная</a></li>
+        <li class="nav__item"><a class="nav__link" href="news.html">Новости</a></li>
+        <li class="nav__item"><a class="nav__link" href="practices.html">Практики</a></li>
+        <li class="nav__item"><a class="nav__link" href="goods.html">Товары</a></li>
+        <li class="nav__item"><a class="nav__link nav__link--active" href="contacts.html">Контакты</a></li>
       </ul>
     </nav>
 
     <main class="content">
       <h1 class="page-title">Контакты</h1>
 
-      <section class="contacts-container">
-        <article class="contact-info">
+      <section class="contacts__container">
+        <article class="contacts__info">
           <h3>Электронная почта</h3>
           <p>Адрес электронной почты: astafev@mirea.ru</p>
         </article>
-        <article class="contact-info">
+        <article class="contacts__info">
           <h3>Физический адрес</h3>
           <p>Адрес: г. Москва, ул. Пушкина, д. Колотушкина</p>
         </article>
 
-        <div class="contact-grid">
-          <div class="contact-item">
+        <div class="contacts__grid">
+          <div class="contacts__item">
             <h3>Телефон</h3>
             <p>+7 (495) 123-45-67</p>
           </div>
-          <div class="contact-item">
+          <div class="contacts__item">
             <h3>Время работы</h3>
             <p>Пн-Пт: 9:00-18:00</p>
           </div>
-          <div class="contact-item">
+          <div class="contacts__item">
             <h3>Социальные сети</h3>
             <p>VK, Telegram, WhatsApp</p>
           </div>
         </div>
 
         <!-- Кнопка для открытия модального окна -->
-        <button class="contact-button" onclick="contactModal.showModal()">Связаться с нами</button>
+        <button class="btn btn--primary" onclick="contactModal.showModal()">Связаться с нами</button>
       </section>
     </main>
 
@@ -62,10 +66,10 @@
 
   <!-- Модальное окно для формы обратной связи -->
   <dialog id="contactModal">
-    <div class="modal-header">
+    <div class="modal__header">
       <h2>Форма обратной связи</h2>
     </div>
-    <div class="modal-content">
+    <div class="modal__content">
       <form id="feedbackForm" method="dialog">
         <div class="form-group">
           <label for="name">Имя <span class="required">*</span></label>
@@ -101,8 +105,8 @@
         </div>
 
         <div class="modal-actions">
-          <button type="submit" class="btn btn-secondary">Отмена</button>
-          <button type="button" class="btn btn-primary" onclick="submitForm()">Отправить</button>
+          <button type="submit" class="btn btn--secondary">Отмена</button>
+          <button type="button" class="btn btn--primary" onclick="submitForm()">Отправить</button>
         </div>
       </form>
     </div>
@@ -151,6 +155,23 @@
         event.preventDefault();
       }
     });
+
+    // Theme toggle
+    (function() {
+      const root = document.documentElement;
+      const saved = localStorage.getItem('theme');
+      if (saved === 'dark') root.setAttribute('data-theme', 'dark');
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          root.removeAttribute('data-theme');
+          localStorage.removeItem('theme');
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      });
+    })();
   </script>
 </body>
 </html>
